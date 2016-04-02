@@ -31,12 +31,9 @@ def observe_build_status(url):
             print_to_slack("Build queued")
             time.sleep(30)
 
-        if 'status' in soup.build and soup.build['status'] == "FAILURE":
-            print_to_slack("Build Failed with status text:")
-            print_to_slack(soup.statustext)
+        if soup.build['state'] == "finished":
+            print_to_slack("Build Finished with status text: {0}".format(soup.statustext.text))
+
             break
 
-        if 'status' in soup.build and soup.build['status'] == "SUCCESS":
-            print_to_slack("Build Success with status text:")
-            print_to_slack(soup.statustext)
-            break
+observe_build_status('/httpAuth/app/rest/buildQueue/id:1404')
