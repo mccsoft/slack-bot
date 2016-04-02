@@ -2,18 +2,34 @@ import time
 from slackclient import SlackClient
 from slacker import Slacker
 
-slack = Slacker("xoxp-3112620471-7040594676-31499489488-82fa270292")
+token = "xoxp-3112620471-7040594676-31516333026-b4642a3eef"
+
+slack = Slacker(token)
+
+commands = {"bot": 'Somebody call me?',
+            "bot commands": "Im currently useless and can do nothing,"
+                            " hope soon i will learn some cool stuff"}
 
 
-token = "xoxp-3112620471-7040594676-31499489488-82fa270292"
+def process_message(api, message):
+    if "text" in message:
+        message_content = message["text"]
+
+        if message_content in commands:
+            api.chat.post_message("#hackaton-bot", commands[message_content])
+
 sc = SlackClient(token)
 if sc.rtm_connect():
     while True:
         message = sc.rtm_read()
         if len(message) != 0:
             unpacked = message[0]
-            if "text" in unpacked and unpacked["text"] == "bot":
-                slack.chat.post_message('#hackaton-bot', 'Somebody call me?')
+            process_message(slack, unpacked)
+
         time.sleep(1)
 else:
     print("Connection Failed, invalid token?")
+
+
+
+
