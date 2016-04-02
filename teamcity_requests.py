@@ -4,6 +4,7 @@ from Config import teamcity_creds
 from bs4 import BeautifulSoup
 from SlackUtils import print_to_slack
 import time
+import threading
 
 url = "http://teamcity.mcc-tomsk.de/httpAuth/app/rest/buildQueue"
 xml = """<build>
@@ -26,16 +27,16 @@ def observe_build_status(url):
                                                                                          teamcity_creds["password"]))
 
         soup = BeautifulSoup(response.text, "html.parser")
-        print(soup.prettify())
-        if soup.build['status'] == "FAILURE":
+        if soup.build['state'] == "queued":
+            print_to_slack("Build queued")
+            time.sleep(30)
+
+        if 'status' in soup.build and soup.build['status'] == "FAILURE":
+            print_to_slack("Build Failed with status text:")
             print_to_slack(soup.statustext)
             break
 
-        if soup.build['status'] == "SUCCESS":
+        if 'status' in soup.build and soup.build['status'] == "SUCCESS":
+            print_to_slack("Build Success with status text:")
             print_to_slack(soup.statustext)
             break
-
-        print_to_slack(soup.build['status'])
-        print_to_slack(soup.statustext)
-        time.sleep(30)
-
