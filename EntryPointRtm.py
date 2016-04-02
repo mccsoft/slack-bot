@@ -16,7 +16,6 @@ def process_message(api, message):
 
 sc = SlackClient(token)
 
-print(slack.users.list().body)
 if sc.rtm_connect():
     while True:
         message = sc.rtm_read()

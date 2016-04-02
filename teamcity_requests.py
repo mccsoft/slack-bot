@@ -14,4 +14,4 @@ def trigger_build(build_id):
     body = xml.format(build_id)
     response = requests.post(url, data=body, headers=headers, auth=HTTPBasicAuth(teamcity_creds["login"], teamcity_creds["password"]))
 
-    return response.status_code
+    return response
