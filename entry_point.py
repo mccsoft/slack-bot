@@ -1,8 +1,8 @@
 import time
 from slackclient import SlackClient
 from slacker import Slacker
-from Config import token
-from CommandWorker import parse_command
+from config import token
+from сommand_worker import parse_command
 from commands import commands
 
 slack = Slacker(token)

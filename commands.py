@@ -1,4 +1,4 @@
-from TeamcityUtils import get_build_ids
+from teamcity_utils import get_build_ids
 
 commands = {"bot": 'Somebody call me?',
             "bot commands": "Im currently useless and can do nothing,"

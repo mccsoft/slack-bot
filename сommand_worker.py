@@ -1,5 +1,5 @@
 from teamcity_requests import trigger_build, observe_build_status
-from SlackUtils import print_to_slack
+from slack_utils import print_to_slack
 from bs4 import BeautifulSoup
 import threading
 

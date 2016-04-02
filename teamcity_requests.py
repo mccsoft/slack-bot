@@ -1,8 +1,8 @@
 from requests.auth import HTTPBasicAuth
 import requests
-from Config import teamcity_creds
+from config import teamcity_creds
 from bs4 import BeautifulSoup
-from SlackUtils import print_to_slack
+from slack_utils import print_to_slack
 import time
 import threading
 

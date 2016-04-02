@@ -1,5 +1,5 @@
 from pyteamcity import TeamCity
-from Config import teamcity_creds
+from config import teamcity_creds
 
 def get_build_ids():
     tc = TeamCity(teamcity_creds["login"], teamcity_creds["password"], "teamcity.mcc-tomsk.de")

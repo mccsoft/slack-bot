@@ -1,5 +1,5 @@
 from slacker import Slacker
-from Config import token
+from config import token
 
 slack = Slacker(token)
 
