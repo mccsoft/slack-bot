@@ -1,18 +1,35 @@
 import time
+import json
 from slackclient import SlackClient
 from slacker import Slacker
-from config import token
 from сommand_worker import parse_command
 from commands import commands
+from collections import namedtuple
+
+with open('appsettings.json') as config_file:
+    config = json.load(config_file, object_hook=lambda d: namedtuple('X', d.keys())(*d.values()))
+
+token = config.token
+bot_settings = config.bot_settings
+
+channel_name = bot_settings.channel_name
 
 slack = Slacker(token)
+
+channel_id = ""
+
+for channel in slack.channels.list().body['channels']:
+    if channel['name'] == channel_name[1:]:
+        channel_id = channel['id']
+
+print(channel_id)
 
 def process_message(api, message):
     if "text" in message:
         message_content = message["text"]
         parse_command(message_content)
         if message_content in commands:
-            api.chat.post_message("#hackaton-bot", commands[message_content], 'bombila')
+            api.chat.post_message(bot_settings.channel_name, commands[message_content], bot_settings.bot_name)
 
 sc = SlackClient(token)
 

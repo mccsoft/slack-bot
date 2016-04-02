@@ -26,6 +26,7 @@ def parse_response(response):
     else:
         print_to_slack("Build triggering error : " + response.status_code)
 
+
 def parse_command(message_content):
     print(message_content[0])
     if message_content[0] == "!":
