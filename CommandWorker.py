@@ -21,6 +21,7 @@ def parse_response(response):
     soup = BeautifulSoup(response.text)
     if response.status_code == 200:
         print_to_slack("Build triggered. " + soup.build["weburl"])
+        print_to_slack(soup.build['href'])
         threading.Thread(target=observe_build_status, args=[soup.build['href']]).start()
     else:
         print_to_slack("Build triggering error : " + response.status_code)
