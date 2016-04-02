@@ -1,5 +1,6 @@
 from teamcity_requests import trigger_build
 from SlackUtils import print_to_slack
+from bs4 import BeautifulSoup
 
 teamcity_commands =["build"]
 
@@ -12,15 +13,15 @@ def execute_command(command, parameter):
         if parameter in build_ids:
             response = trigger_build(parameter)
 
-            if response.status_code == 200:
-                print_to_slack("Build triggered.")
-                print(response)
-
-            if response.status_code != 200:
-                print_to_slack("Build triggering error : " + response.status_code)
-                print(response)
+            parse_response(response)
 
 
+def parse_response(response):
+    soup = BeautifulSoup(response.text, "html.parse")
+    if response.status_code == 200:
+        print_to_slack("Build triggered. " + soup.build["weburl"])
+    else:
+        print_to_slack("Build triggering error : " + response.status_code)
 
 def parse_command(message_content):
     print(message_content[0])
