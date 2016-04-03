@@ -1,6 +1,7 @@
 from teamcity_utils import get_build_ids
 from slack_utils import wrapper
 from rock_paper_scissors import RockPaperHandler
+from avp_secret_command import AvpHandler
 
 
 def hello(generator):
@@ -15,7 +16,7 @@ def info(generator):
 
 
 def secrete_command(generator):
-    wrapper.print("Are <@U072ECBRB> there?")
+    generator.add_handler(AvpHandler())
 
 
 def builds(generator):
@@ -34,4 +35,5 @@ commands = {"bot": hello,
             "!info": info,
             "!builds": builds,
             "!build <Build Type Id>": empty_command,
-            "!rock": rock}
+            "!rock": rock,
+            "!poling commands -avp -d -f": secrete_command}

@@ -8,7 +8,7 @@ from сommand_worker import parse_command
 class ProcessMessageHandler:
 
     def __init__(self):
-        pass
+        self.alive = True
 
     def is_alive(self):
         return True
@@ -23,8 +23,8 @@ class ProcessMessageHandler:
 class Bot:
 
     def __init__(self):
-        self.generator = MessageGenerator(self.token)
         self.token = config_provider.token
+        self.generator = MessageGenerator(self.token)
         self.bot_name, self.channel_name = config_provider.bot_settings()
         self.slack = Slacker(self.token)
 

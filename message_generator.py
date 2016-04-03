@@ -15,10 +15,12 @@ class MessageWrapper:
         self.__dict__ = json_message
 
     def channel_name(self):
-        return get_channel_by_id(self.channel)
+        if hasattr(self, "channel"):
+            return get_channel_by_id(self.channel)
 
     def user_name(self):
-        return get_user_by_id(self.user)
+        if hasattr(self, "user"):
+            return get_user_by_id(self.user)
 
 
 class MessageGenerator:
@@ -44,7 +46,7 @@ class MessageGenerator:
                     if wrapped_message.type == "message":
                         if wrapped_message.channel_name() == channel_name[1:]:
                             for handler in self.handlers:
-                                if handler.is_alive():
+                                if handler.alive:
                                     threading.Thread(target=handler.handle, args=(wrapped_message, self)).start()
                                 else:
                                     self.handlers.remove(handler)
