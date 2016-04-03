@@ -21,8 +21,11 @@ def builds():
     for build_id in get_build_ids():
         wrapper.print("", title=build_id)
 
+def empty_command():
+    pass
+
 
 commands = {"bot": hello,
             "!info": info,
             "!builds": builds,
-            "!poling -avp -d -f": secrete_command}
+            "!build <Build Type Id>": empty_command}

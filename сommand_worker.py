@@ -33,8 +33,8 @@ def parse_response(response):
 
 
 def parse_command(message_content):
-    print(message_content[0])
-    if message_content[0] == "!":
-        array_of_words = message_content[1:].split()
-        if array_of_words[0] in teamcity_commands:
-            execute_teamcity_command(array_of_words)
+    if len(message_content):
+        if message_content[0] == "!":
+            array_of_words = message_content[1:].split()
+            if array_of_words[0] in teamcity_commands:
+                execute_teamcity_command(array_of_words)

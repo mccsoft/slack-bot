@@ -5,6 +5,18 @@ bot_name, channel_name = config_provider.bot_settings()
 slack = Slacker(config_provider.token)
 
 
+def get_user_by_id(id):
+    for user in slack.users.list().body['members']:
+        if user['id'] == id:
+            return user['name']
+
+
+def get_channel_by_id(id):
+    for channel in slack.channels.list().body['channels']:
+        if channel['id'] == id:
+            return channel['name']
+
+
 def get_channel_id(name):
     for channel in slack.channels.list().body['channels']:
         if channel['name'] == name:
