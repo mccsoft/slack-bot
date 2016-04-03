@@ -1,5 +1,5 @@
 from teamcity_requests import trigger_build, observe_build_status
-from slack_utils import print_to_slack
+from slack_utils import wrapper
 from bs4 import BeautifulSoup
 import threading
 
@@ -20,11 +20,11 @@ def execute_command(command, parameter):
 def parse_response(response):
     soup = BeautifulSoup(response.text)
     if response.status_code == 200:
-        print_to_slack("Build triggered. " + soup.build["weburl"])
-        print_to_slack(soup.build['href'])
+        wrapper.print("", title="Build triggered", color="good", title_link=soup.build["weburl"])
+
         threading.Thread(target=observe_build_status, args=[soup.build['href']]).start()
     else:
-        print_to_slack("Build triggering error : " + response.status_code)
+        wrapper.print("Build triggering error : " + response.status_code, title="Failure!", color="danger")
 
 
 def parse_command(message_content):

@@ -1,7 +1,7 @@
 from requests.auth import HTTPBasicAuth
 import requests
 from bs4 import BeautifulSoup
-from slack_utils import print_to_slack
+from slack_utils import wrapper
 import time
 from config_provider import config_provider
 
@@ -22,18 +22,23 @@ def trigger_build(build_id):
     return response
 
 
+def get_color(status_text):
+    return "good" if status_text == "SUCCESS" else "danger"
+
+
 def observe_build_status(url):
     while True:
         response = requests.get("http://teamcity.mcc-tomsk.de" + url, auth=HTTPBasicAuth(login, password))
         soup = BeautifulSoup(response.text, "html.parser")
+
         if soup.build['state'] == "queued":
-            print_to_slack("Build queued")
-            time.sleep(30)
+            wrapper.print("Build agents are not ready waiting for them!", titile="Build queued", color="warning")
+            time.sleep(60)
 
         if soup.build['state'] == "running":
-            print_to_slack("Running a buils")
-            time.sleep(30)
+            wrapper.print("Build is currently running", title="Running a build", color="#439FE0")
+            time.sleep(60)
 
         if soup.build['state'] == "finished":
-            print_to_slack("Build Finished with status text: {0}".format(soup.statustext.text))
+            wrapper.print(("Build Finished with status text: {0}".format(soup.statustext.text)), title="Finished!", color=get_color(soup.statustext.text))
             break

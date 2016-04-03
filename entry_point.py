@@ -1,5 +1,4 @@
 import time
-import json
 from slackclient import SlackClient
 from slacker import Slacker
 from сommand_worker import parse_command
@@ -12,6 +11,7 @@ token = config_provider.token
 bot_name, channel_name = config_provider.bot_settings()
 
 slack = Slacker(token)
+
 
 def process_message(api, message):
     if "text" in message:
