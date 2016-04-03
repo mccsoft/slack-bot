@@ -1,9 +1,8 @@
-from teamcity_requests import trigger_build, observe_build_status
-from slack_utils import wrapper
-from bs4 import BeautifulSoup
-from teamcity_utils import get_build_ids
-from slack_utils import wrapper
 import threading
+from bs4 import BeautifulSoup
+from slack_utils import wrapper
+from teamcity_requests import trigger_build, observe_build_status
+from teamcity_utils import get_build_ids
 
 teamcity_commands = ["build"]
 build_ids = get_build_ids()
@@ -33,8 +32,8 @@ def parse_response(response):
 
 
 def parse_command(message_content):
-    print(message_content[0])
-    if message_content[0] == "!":
-        array_of_words = message_content[1:].split()
-        if array_of_words[0] in teamcity_commands:
-            execute_teamcity_command(array_of_words)
+    if len(message_content) > 0:
+        if message_content[0] == "!":
+            array_of_words = message_content[1:].split()
+            if array_of_words[0] in teamcity_commands:
+                execute_teamcity_command(array_of_words)

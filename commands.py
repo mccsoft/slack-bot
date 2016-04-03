@@ -1,6 +1,6 @@
 from teamcity_utils import get_build_ids
 
-commands = {"bot": 'Somebody call me?',
+commands = {"!": 'Somebody call me?',
             "bot commands": "Im currently useless and can do nothing,"
                             " hope soon i will learn some cool stuff",
             "bot builds": get_build_ids(),
