@@ -49,7 +49,7 @@ class RockPaperHandler:
             first = variables[0]
 
             if first == message.text:
-                wrapper.print("It's a draw i bet you can do better", color='warning')
+                wrapper.print("", title="It's a draw i bet you can do better", color='warning')
             else:
                 am_i_win(first, message.text)
 

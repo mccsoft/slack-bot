@@ -45,7 +45,7 @@ class MessageGenerator:
                         if wrapped_message.channel_name() == channel_name[1:]:
                             for handler in self.handlers:
                                 if handler.is_alive():
-                                    handler.handle(wrapped_message, self)
+                                    threading.Thread(target=handler.handle, args=(wrapped_message, self)).start()
                                 else:
                                     self.handlers.remove(handler)
 
