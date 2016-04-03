@@ -1,7 +1,28 @@
 from teamcity_utils import get_build_ids
+from slack_utils import wrapper
 
-commands = {"bot": 'Somebody call me?',
-            "bot commands": "Im currently useless and can do nothing,"
-                            " hope soon i will learn some cool stuff",
-            "bot builds": get_build_ids(),
-            "bot poling commands -avp -d -f": "Are <@U072ECBRB> there?"}
+
+def hello():
+    wrapper.print("Somebody call me? To know what i can type !info")
+
+
+def info():
+    wrapper.print("", title="I can do some cool stuff actually!")
+
+    for key in commands.keys():
+        wrapper.print("", title=key)
+
+
+def secrete_command():
+    wrapper.print("Are <@U072ECBRB> there?")
+
+
+def builds():
+    for build_id in get_build_ids():
+        wrapper.print("", title=build_id)
+
+
+commands = {"bot": hello,
+            "!info": info,
+            "!builds": builds,
+            "!poling -avp -d -f": secrete_command}
