@@ -23,7 +23,7 @@ def trigger_build(build_id):
 
 
 def get_color(status_text):
-    return "good" if status_text == "SUCCESS" else "danger"
+    return "good" if status_text.lower() == "success" else "danger"
 
 
 def observe_build_status(url):
