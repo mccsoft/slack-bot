@@ -1,23 +1,6 @@
-from slacker import Slacker
-from commands import commands
 from config_provider import config_provider
 from message_generator import MessageGenerator
-from сommand_worker import parse_command
-
-
-class ProcessMessageHandler:
-
-    def __init__(self):
-        self.alive = True
-
-    def is_alive(self):
-        return True
-
-    def handle(self, message, generator):
-        message_content = message.text
-        parse_command(message_content)
-        if message_content in commands:
-            commands[message_content](generator)
+from handlers.process_message_handler import ProcessMessageHandler
 
 
 class Bot:
@@ -25,8 +8,6 @@ class Bot:
     def __init__(self):
         self.token = config_provider.token
         self.generator = MessageGenerator(self.token)
-        self.bot_name, self.channel_name = config_provider.bot_settings()
-        self.slack = Slacker(self.token)
 
     def run(self):
         self.generator.add_handler(ProcessMessageHandler())

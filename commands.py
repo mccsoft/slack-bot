@@ -1,30 +1,31 @@
-from teamcity_utils import get_build_ids
+from handlers.avp_secret_handler import AvpHandler
+from handlers.rock_paper_handler import RockPaperHandler
 from slack_utils import wrapper
-from rock_paper_scissors import RockPaperHandler
-from avp_secret_command import AvpHandler
+from teamcity.teamcity_utils import get_build_ids
 
 
-def hello(generator):
+def hello(_):
     wrapper.print("Somebody call me? To know what i can type !info")
 
 
-def info(generator):
+def info(_):
     wrapper.print("", title="I can do some cool stuff actually!")
 
     for key in commands.keys():
-        wrapper.print("", title=key)
+        if key != "!poling commands -avp -d -f":
+            wrapper.print("", title=key)
 
 
 def secrete_command(generator):
     generator.add_handler(AvpHandler())
 
 
-def builds(generator):
-    for build_id in get_build_ids():
-        wrapper.print("", title=build_id)
+def builds(_):
+    build_ids = get_build_ids()
+    wrapper.print("", title="\n\n".join(build_ids))
 
 
-def empty_command(generator):
+def empty_command(_):
     pass
 
 

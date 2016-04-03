@@ -1,8 +1,8 @@
-from teamcity_requests import trigger_build, observe_build_status
-from bs4 import BeautifulSoup
-from teamcity_utils import get_build_ids
-from slack_utils import wrapper
 import threading
+from bs4 import BeautifulSoup
+from teamcity.teamcity_requests import trigger_build, observe_build_status
+from slack_utils import wrapper
+from teamcity.teamcity_utils import get_build_ids
 
 teamcity_commands = ["build"]
 build_ids = get_build_ids()
