@@ -1,5 +1,4 @@
 from slacker import Slacker
-
 from commands import commands
 from config_provider import config_provider
 from message_generator import MessageGenerator
@@ -24,13 +23,11 @@ class ProcessMessageHandler:
 class Bot:
 
     def __init__(self):
+        self.generator = MessageGenerator(self.token)
         self.token = config_provider.token
         self.bot_name, self.channel_name = config_provider.bot_settings()
         self.slack = Slacker(self.token)
 
-
-
     def run(self):
-        self.generator = MessageGenerator(self.token)
         self.generator.add_handler(ProcessMessageHandler())
         self.generator.run()

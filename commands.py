@@ -13,13 +13,10 @@ def info():
         wrapper.print("", title=key)
 
 
-def secrete_command():
-    wrapper.print("Are <@U072ECBRB> there?")
-
-
 def builds():
     for build_id in get_build_ids():
         wrapper.print("", title=build_id)
+
 
 def empty_command():
     pass
