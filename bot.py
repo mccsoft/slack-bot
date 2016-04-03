@@ -17,7 +17,7 @@ class ProcessMessageHandler:
         message_content = message.text
         parse_command(message_content)
         if message_content in commands:
-            commands[message_content]()
+            commands[message_content](generator)
 
 
 class Bot:
