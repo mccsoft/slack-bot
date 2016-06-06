@@ -4,13 +4,7 @@ import pykka
 from slack_utils import get_user_by_id
 from slack_utils import get_channel_by_id
 from config_provider import config_provider
-from actors.hello_actor import HelloActor
-from actors.info_actor import InfoActor
-from actors.build_list_actor import BuildListActor
-from actors.service_status_actor import ServiceStatusActor
-from actors.rock_paper_actor import RockPaperActor
-from actors.build_actor import BuildActor
-#TODO try to rework with async await
+
 
 bot_name, channel_name = config_provider.bot_settings()
 
@@ -46,8 +40,3 @@ class MessageGenerator:
 
                     if wrapped_message.type == "message":
                         pykka.ActorRegistry.broadcast(wrapped_message.__dict__)
-
-
-
-
-
