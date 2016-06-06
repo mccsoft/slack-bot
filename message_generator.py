@@ -1,9 +1,15 @@
 from slackclient import SlackClient
 import threading
+import pykka
 from slack_utils import get_user_by_id
 from slack_utils import get_channel_by_id
 from config_provider import config_provider
-
+from actors.hello_actor import HelloActor
+from actors.info_actor import InfoActor
+from actors.build_list_actor import BuildListActor
+from actors.service_status_actor import ServiceStatusActor
+from actors.rock_paper_actor import RockPaperActor
+from actors.build_actor import BuildActor
 #TODO try to rework with async await
 
 bot_name, channel_name = config_provider.bot_settings()
@@ -27,10 +33,6 @@ class MessageGenerator:
 
     def __init__(self, token):
         self.slack_client = SlackClient(token)
-        self.handlers = []
-
-    def add_handler(self, handler):
-        self.handlers.append(handler)
 
     def run(self):
         threading.Thread(target=self.start).start()
@@ -39,17 +41,13 @@ class MessageGenerator:
         if self.slack_client.rtm_connect():
             while True:
                 message = self.slack_client.rtm_read()
-
                 if len(message):
                     wrapped_message = MessageWrapper(message[0])
 
                     if wrapped_message.type == "message":
-                        if wrapped_message.channel_name() == channel_name[1:]:
-                            for handler in self.handlers:
-                                if handler.alive:
-                                    threading.Thread(target=handler.handle, args=(wrapped_message, self)).start()
-                                else:
-                                    self.handlers.remove(handler)
+                        pykka.ActorRegistry.broadcast(wrapped_message.__dict__)
+
+
 
 
 

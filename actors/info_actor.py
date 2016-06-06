@@ -6,8 +6,11 @@ from commands import commands
 class InfoActor(pykka.ThreadingActor):
 
     def on_receive(self, message):
-        wrapper.print("", title="I can do some cool stuff actually!")
+        message_content = message.get("text", None)
 
-        for key in commands.keys():
-            if key != "!poling commands -avp -d -f":
-                wrapper.print("", title=key)
+        if message_content == "!info":
+            wrapper.print("", title="I can do some cool stuff actually!")
+
+            for command in commands:
+                if command != "!poling commands -avp -d -f":
+                    wrapper.print("", title=command)

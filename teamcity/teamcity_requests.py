@@ -4,6 +4,8 @@ from bs4 import BeautifulSoup
 from slack_utils import wrapper
 import time
 from config_provider import config_provider
+import threading
+
 
 login, password = config_provider.user_credentials()
 
@@ -42,3 +44,18 @@ def observe_build_status(url):
         if soup.build['state'] == "finished":
             wrapper.print(("Build Finished with status text: {0}".format(soup.statustext.text)), title="Finished!", color=get_color(soup.statustext.text))
             break
+
+
+def parse_response(response):
+    soup = BeautifulSoup(response.text)
+    if response.status_code == 200:
+        wrapper.print("", title="Build triggered", color="good", title_link=soup.build["weburl"])
+
+        threading.Thread(target=observe_build_status, args=[soup.build['href']]).start()
+    else:
+        wrapper.print("Build triggering error : " + response.status_code, title="Failure!", color="danger")
+
+
+def process_build(build_id):
+    response = trigger_build(build_id)
+    parse_response(response)
