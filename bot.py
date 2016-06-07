@@ -11,7 +11,7 @@ class Bot:
 
     def __init__(self):
         self.token = config_provider.token
-        self.generator = MessageGenerator(self.token)
+        self.generator = MessageGenerator()
         HelloActor.start()
         InfoActor.start()
         BuildListActor.start()

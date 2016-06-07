@@ -8,5 +8,5 @@ setup(
     license='',
     author='anp',
     author_email='',
-    description='', requires=['slacker', 'pykka', 'bs4', 'slackclient', 'pyteamcity', 'requests']
+    description='', requires=['slacker', 'pykka', 'bs4', 'pyteamcity', 'requests', 'slacksocket']
 )

@@ -1,9 +1,8 @@
-from slackclient import SlackClient
+from slacksocket import SlackSocket
 import threading
 import pykka
-from slack_utils import get_user_by_id
-from slack_utils import get_channel_by_id
 from config_provider import config_provider
+import json
 
 
 bot_name, channel_name = config_provider.bot_settings()
@@ -16,27 +15,23 @@ class MessageWrapper:
 
     def channel_name(self):
         if hasattr(self, "channel"):
-            return get_channel_by_id(self.channel)
+            return self.channel
 
     def user_name(self):
         if hasattr(self, "user"):
-            return get_user_by_id(self.user)
+            return self.user
 
 
 class MessageGenerator:
-
-    def __init__(self, token):
-        self.slack_client = SlackClient(token)
 
     def run(self):
         threading.Thread(target=self.start).start()
 
     def start(self):
-        if self.slack_client.rtm_connect():
-            while True:
-                message = self.slack_client.rtm_read()
-                if len(message):
-                    wrapped_message = MessageWrapper(message[0])
+        socket = SlackSocket(config_provider.token, translate=True)
 
-                    if wrapped_message.type == "message":
-                        pykka.ActorRegistry.broadcast(wrapped_message.__dict__)
+        for event in socket.events():
+            message = MessageWrapper(json.loads(event.json))
+
+            if message.type == "message":
+                pykka.ActorRegistry.broadcast(message.__dict__)
