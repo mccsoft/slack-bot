@@ -2,7 +2,7 @@ import pykka
 from slack_utils import wrapper
 from collections import namedtuple
 import requests
-import dateutil.parser as date_parser
+from dateutil import parser
 import json
 
 
@@ -24,7 +24,7 @@ def act():
                       fallback="Database status")
 
         for transmission in live_report.TransmissionStatistics:
-            date = date_parser.parse(transmission.TransmissionsDate)
+            date = parser.parse(transmission.TransmissionsDate)
             title = "Transmission for: {0}".format(date.strftime("%Y-%B-%d"))
             text = "Published {0} messages, failed {1}. \n Consumed {2} message, failed {3}".format(
                 transmission.SuccedPublishedMessage, transmission.FailedToPublishedMessage,
