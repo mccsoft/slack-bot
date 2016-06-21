@@ -10,9 +10,9 @@ def get_color(predicate):
     return "good" if predicate else "danger"
 
 
-def act():
+def act(url):
     try:
-        response = requests.get("http://localhost:5000")
+        response = requests.get(url)
         raw_content = response.content.decode('utf-8')
         live_report = json.loads(raw_content, object_hook=lambda d: namedtuple('X', d.keys())(*d.values()))
 
@@ -31,7 +31,7 @@ def act():
                 transmission.ConsumedMessage, transmission.FailedToConsumeMessage)
             wrapper.print("", text=text, title=title, fallback="title")
     except:
-        wrapper.print("", title="Service is unavailable", color="danger")
+        wrapper.print("", title="Service is on url {0} is unavailable".format(url), color="danger")
 
 
 class ServiceStatusActor(pykka.ThreadingActor):
@@ -39,4 +39,4 @@ class ServiceStatusActor(pykka.ThreadingActor):
         message_content = message.get("text", None)
 
         if message_content == "!status":
-            act()
+            act("http://localhost:5000")
